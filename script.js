@@ -3,6 +3,8 @@ canvas.width = innerWidth
 canvas.height = innerHeight
 const c = canvas.getContext("2d")
 
+
+
 //#region [Classes]
 class Draw {
     static drawRotatedRectangle(x, y, width, height, theta, color, flip, wired) {
@@ -190,6 +192,18 @@ const Garbages = new Array()
 Garbages[0] = new Garbage(0, 0, 85, 234 * 0.5, 22, 0, 100, 234, "./Assets/Garbages/bottle.png", 0.5, Math.PI / 6, "bottle")
 Garbages[1] = new Garbage(0, 0, 55, 38, 20, -12, 100, 422, "./Assets/Garbages/cigarette.png", 0.15, -Math.PI / 3, "cigarette")
 Garbages[2] = new Garbage(0, 0, 82, 66, 15, -10, 100, 181, "./Assets/Garbages/coffee_cup.png", 0.5, -Math.PI / 3, "coffeeCup")
+for (let i = 0; i < Garbages.length; i++) {
+    let x;
+    let y;
+    x = Math.random() * (canvas.width - Garbages[i].width)
+    if (x < 230) {
+        y = Math.random() * (canvas.height - Garbages[i].height - 199) + 200
+    }
+    else {
+        y = Math.random() * (canvas.height - Garbages[i].height)
+    }
+    Garbages[i].translate(x, y)
+}
 //#endregion
 
 //#region [UI]
@@ -202,27 +216,68 @@ box.style.display = "none"
 collect.addEventListener("click", () => {
     box.style.display = "none"
     playable = true
+    console.log("collect")
+    movementInput.down.down = false
+    movementInput.up.down = false
+    movementInput.left.down = false
+    movementInput.right.down = false
 })
 ignore.addEventListener("click", () => {
     box.style.display = "none"
     playable = true
+    movementInput.down.down = false
+    movementInput.up.down = false
+    movementInput.left.down = false
+    movementInput.right.down = false
 })
+
+//#endregion
+
+//#region [Smartphone controls]
+function isSmartphone() {
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    return /iPhone|iPod|Android.*Mobile|Windows Phone|IEMobile/.test(userAgent);
+}
+const up = document.getElementById("up")
+const down = document.getElementById("down")
+const left = document.getElementById("left")
+const right = document.getElementById("right")
+if (isSmartphone()) {
+    up.addEventListener("touchstart", (e) => {
+        movementInput.up.down = true
+    })
+    up.addEventListener("touchend", (e) => {
+        movementInput.up.down = false
+    })
+    down.addEventListener("touchstart", (e) => {
+        movementInput.down.down = true
+    })
+    down.addEventListener("touchend", (e) => {
+        movementInput.down.down = false
+    })
+    left.addEventListener("touchstart", (e) => {
+        movementInput.left.down = true
+    })
+    left.addEventListener("touchend", (e) => {
+        movementInput.left.down = false
+    })
+    right.addEventListener("touchstart", (e) => {
+        movementInput.right.down = true
+    })
+    right.addEventListener("touchend", (e) => {
+        movementInput.right.down = false
+    })
+} else {
+    up.style.display = "none"
+    down.style.display = "none"
+    left.style.display = "none"
+    right.style.display = "none"
+}
+
 //#endregion
 
 const player = new Player(10, 10, 220, 84 * 2, 15, 50, 100, 50, "./Assets/DiverFrames.png", 10, 20, 2)
 const playerSpeed = 2
-for (let i = 0; i < Garbages.length; i++) {
-    let x;
-    let y;
-    x = Math.random() * (canvas.width - Garbages[i].width - 199) + 200
-    if (x < 220) {
-        y = Math.random() * (canvas.height - Garbages[i].height - 199) + 200
-    }
-    else {
-        y = Math.random() * (canvas.height - Garbages[i].height)
-    }
-    Garbages[i].translate(x, y)
-}
 
 let playable = true
 let lastTime = 0;

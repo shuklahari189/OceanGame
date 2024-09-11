@@ -2,6 +2,14 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    user-select: none;
+    /* Prevent text selection */
+    -webkit-user-select: none;
+    /* For Chrome/Safari */
+    -moz-user-select: none;
+    /* For Firefox */
+    -ms-user-select: none;
+    /* For Internet Explorer/Edge */
 }
 
 .canvas {
@@ -17,6 +25,7 @@
     display: none;
     justify-content: center;
     align-items: center;
+    z-index: 2;
 }
 
 .box {
@@ -31,4 +40,92 @@
     gap: 5px;
     align-items: center;
     justify-content: center;
+    color: white;
+}
+
+.controls {
+    position: absolute;
+    top: 0;
+    width: 100%;
+    height: 100vh;
+}
+
+.up {
+    all: unset;
+    position: absolute;
+    top: 10px;
+    left: 50%;
+
+    background: #000;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.down {
+    all: unset;
+    position: absolute;
+    top: calc(100vh - 100px);
+    left: calc(50% - 20px);
+
+    background: #000;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.right {
+    all: unset;
+    position: absolute;
+    top: calc(50vh - 100px);
+    left: calc(100% - 60px);
+
+    background: #000;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.left {
+    all: unset;
+    top: calc(50vh - 100px);
+    position: absolute;
+
+    background: #000;
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.up:active {
+    background: #aaa;
+    transform: scale(1.2);
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.right:active {
+    background: #aaa;
+    transform: scale(1.2);
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+
+}
+
+.down:active {
+    background: #aaa;
+    transform: scale(1.2);
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.left:active {
+    background: #aaa;
+    transform: scale(1.2);
+    color: white;
+    padding: 10px;
+    border-radius: 10px;
 }
