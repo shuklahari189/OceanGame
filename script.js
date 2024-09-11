@@ -193,6 +193,7 @@ Garbages[2] = new Garbage(0, 0, 82, 66, 15, -10, 100, 181, "./Assets/Garbages/co
 //#endregion
 
 //#region [UI]
+c.font = "40px san"
 const box = document.getElementById("box")
 const info = document.getElementById("info")
 const collect = document.getElementById("collect")
@@ -209,12 +210,28 @@ ignore.addEventListener("click", () => {
 //#endregion
 
 const player = new Player(10, 10, 220, 84 * 2, 15, 50, 100, 50, "./Assets/DiverFrames.png", 10, 20, 2)
-Garbages[0].translate(Math.random() * (canvas.width - Garbages[0].width - 199) + 200, Math.random() * (canvas.height - Garbages[0].height - 199) + 200)
-Garbages[1].translate(Math.random() * (canvas.width - Garbages[0].width - 199) + 200, Math.random() * (canvas.height - Garbages[0].height - 199) + 200)
-Garbages[2].translate(Math.random() * (canvas.width - Garbages[0].width - 199) + 200, Math.random() * (canvas.height - Garbages[0].height - 199) + 200)
+const playerSpeed = 2
+for (let i = 0; i < Garbages.length; i++) {
+    let x;
+    let y;
+    x = Math.random() * (canvas.width - Garbages[i].width - 199) + 200
+    if (x < 220) {
+        y = Math.random() * (canvas.height - Garbages[i].height - 199) + 200
+    }
+    else {
+        y = Math.random() * (canvas.height - Garbages[i].height)
+    }
+    Garbages[i].translate(x, y)
+}
 
 let playable = true
-function main() {
+let lastTime = 0;
+let deltaTime = 0;
+function main(currentTime) {
+    currentTime *= 0.1;
+    deltaTime = currentTime - lastTime;
+    lastTime = currentTime;
+    c.clearRect(0, 0, canvas.width, canvas.height)
     c.save()
     c.fillStyle = "rgb(1 95 108)"
     c.fillRect(0, 0, canvas.width, canvas.height)
@@ -248,7 +265,7 @@ function main() {
     }
     requestAnimationFrame(main)
 }
-main()
+main(0)
 
 function playerMovement() {
     // Moving Player
@@ -256,14 +273,14 @@ function playerMovement() {
         if (movementInput.left.down) {
             player.AnimController.left = true
             player.restDirection = true
-            player.translate(-1, 0)
+            player.translate(-playerSpeed * deltaTime, 0)
         }
         else {
             player.AnimController.left = false
         }
         if (movementInput.right.down) {
             player.AnimController.right = true
-            player.translate(1, 0)
+            player.translate(playerSpeed * deltaTime, 0)
             player.restDirection = false
         }
         else {
@@ -271,14 +288,14 @@ function playerMovement() {
         }
         if (movementInput.up.down) {
             player.AnimController.up = true
-            player.translate(0, -1)
+            player.translate(0, -playerSpeed * deltaTime)
         }
         else {
             player.AnimController.up = false
         }
         if (movementInput.down.down) {
             player.AnimController.down = true
-            player.translate(0, 1)
+            player.translate(0, playerSpeed * deltaTime)
         }
         else {
             player.AnimController.down = false
@@ -289,17 +306,15 @@ function playerMovement() {
 function collisionDetection() {
     // Collision Detection
     for (let i = 0; i < Garbages.length; i++) {
-        if (
-            (player.x < Garbages[i].x + Garbages[i].width) &&
-            (player.x + player.width > Garbages[i].x) &&
-            (player.y < Garbages[i].y + Garbages[i].height) &&
-            (player.y + player.height > Garbages[i].y)
-        ) {
-            console.log("colliding with", Garbages[i].name)
-            box.style.display = "flex"
-            Garbages.splice(i, 1);
-            playable = false
-            break;
+        for (let i = 0; i < Garbages.length; i++) {
+            if (!((player.x + player.width < Garbages[i].x) || (player.x > Garbages[i].x + Garbages[i].width) || (player.y + player.height < Garbages[i].y) || (player.y > Garbages[i].y + Garbages[i].height))) {
+                c.fillText("collding with " + Garbages[i].name, 100, 50 * i + 100)
+                box.style.display = "flex"
+                playable = false
+                info.innerText = Garbages[i].name
+                Garbages.splice(i, 1);
+                break;
+            }
         }
     }
 }
