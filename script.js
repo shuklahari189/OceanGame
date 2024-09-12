@@ -3,8 +3,6 @@ canvas.width = innerWidth
 canvas.height = innerHeight
 const c = canvas.getContext("2d")
 
-
-
 //#region [Classes]
 class Draw {
     static drawRotatedRectangle(x, y, width, height, theta, color, flip, wired) {
@@ -189,9 +187,9 @@ window.addEventListener("keyup", (e) => {
 
 //#region [Setting up Garbages]
 const Garbages = new Array()
-Garbages[0] = new Garbage(0, 0, 85, 234 * 0.5, 22, 0, 100, 234, "./Assets/Garbages/bottle.png", 0.5, Math.PI / 6, "bottle")
-Garbages[1] = new Garbage(0, 0, 55, 38, 20, -12, 100, 422, "./Assets/Garbages/cigarette.png", 0.15, -Math.PI / 3, "cigarette")
-Garbages[2] = new Garbage(0, 0, 82, 66, 15, -10, 100, 181, "./Assets/Garbages/coffee_cup.png", 0.5, -Math.PI / 3, "coffeeCup")
+Garbages[0] = new Garbage(0, 0, 85, 234 * 0.5, 22, 0, 100, 234, "./Assets/Garbages/bottle.png", 0.5, Math.PI / 6, "Bottle")
+Garbages[1] = new Garbage(0, 0, 55, 38, 20, -12, 100, 422, "./Assets/Garbages/cigarette.png", 0.15, -Math.PI / 3, "Cigarette")
+Garbages[2] = new Garbage(0, 0, 82, 66, 15, -10, 100, 181, "./Assets/Garbages/coffee_cup.png", 0.5, -Math.PI / 3, "CoffeeCup")
 for (let i = 0; i < Garbages.length; i++) {
     let x;
     let y;
@@ -216,7 +214,6 @@ box.style.display = "none"
 collect.addEventListener("click", () => {
     box.style.display = "none"
     playable = true
-    console.log("collect")
     movementInput.down.down = false
     movementInput.up.down = false
     movementInput.left.down = false
@@ -277,11 +274,21 @@ if (isSmartphone()) {
 //#endregion
 
 const player = new Player(10, 10, 220, 84 * 2, 15, 50, 100, 50, "./Assets/DiverFrames.png", 10, 20, 2)
-const playerSpeed = 2
+const playerSpeed = 4
 
 let playable = true
 let lastTime = 0;
 let deltaTime = 0;
+
+document.addEventListener("visibilitychange", () => {
+    if (document.hidden) {
+        movementInput.up.down = false
+        movementInput.down.down = false
+        movementInput.left.down = false
+        movementInput.right.down = false
+    }
+});
+
 function main(currentTime) {
     currentTime *= 0.1;
     deltaTime = currentTime - lastTime;
@@ -354,6 +361,21 @@ function playerMovement() {
         }
         else {
             player.AnimController.down = false
+        }
+    }
+    // Adding Movement Constraint
+    {
+        if (player.x < 0) {
+            player.translate(playerSpeed * deltaTime, 0)
+        }
+        if (player.x + player.width > canvas.width) {
+            player.translate(-playerSpeed * deltaTime, 0)
+        }
+        if (player.y < 0) {
+            player.translate(0, playerSpeed * deltaTime)
+        }
+        if (player.y + player.height > canvas.height) {
+            player.translate(0, -playerSpeed * deltaTime)
         }
     }
 }
