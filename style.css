@@ -2,14 +2,11 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    user-select: none;
-    /* Prevent text selection */
-    -webkit-user-select: none;
-    /* For Chrome/Safari */
-    -moz-user-select: none;
-    /* For Firefox */
-    -ms-user-select: none;
-    /* For Internet Explorer/Edge */
+}
+
+body {
+    width: 100%;
+    height: 100%;
 }
 
 .canvas {
@@ -20,7 +17,7 @@
     position: absolute;
     top: 0;
     width: 100%;
-    height: 100vh;
+    height: 100%;
     backdrop-filter: blur(10px);
     display: none;
     justify-content: center;
@@ -58,7 +55,7 @@
 .controlsContainer {
     all: unset;
     display: grid;
-    width: 80%;
+    width: 300px;
     grid-template-columns: repeat(3, 1fr);
     grid-template-rows: repeat(3, 1fr);
     row-gap: 10px;
@@ -70,8 +67,13 @@
     grid-column-end: 2;
     display: flex;
     justify-content: center;
-    border: 2px solid black;
     border-radius: 10px;
+}
+
+.up img {
+    padding: 2px;
+    border: 2px solid black;
+    border-radius: 5px;
 }
 
 .down {
@@ -81,12 +83,14 @@
     grid-row-start: 3;
     display: flex;
     justify-content: center;
-    border: 2px solid black;
     border-radius: 10px;
 }
 
 .down img {
     transform: rotateZ(180deg);
+    padding: 2px;
+    border: 2px solid black;
+    border-radius: 5px;
 }
 
 .right {
@@ -94,12 +98,14 @@
     grid-column-start: 3;
     grid-column-end: 3;
     grid-row-start: 2;
-    border: 2px solid black;
     border-radius: 10px;
 }
 
 .right img {
     transform: rotateZ(90deg);
+    padding: 2px;
+    border: 2px solid black;
+    border-radius: 5px;
 }
 
 
@@ -110,31 +116,14 @@
     grid-row-start: 2;
     display: flex;
     justify-content: end;
-    border: 2px solid black;
     border-radius: 10px;
 }
 
 .left img {
     transform: rotateZ(270deg);
-}
-
-/*#endregion*/
-
-/*#region [On Click] */
-.up:active {
-    transform: scale(1.2);
-}
-
-.right:active {
-    transform: scale(1.2);
-}
-
-.down:active {
-    transform: scale(1.2);
-}
-
-.left:active {
-    transform: scale(1.2);
+    padding: 2px;
+    border: 2px solid black;
+    border-radius: 5px;
 }
 
 /*#endregion*/
